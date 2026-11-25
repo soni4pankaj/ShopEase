@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShopEase — Sign In</title>
+  <style>
+    body { font-family: system-ui, sans-serif; display: grid; place-items: center; min-height: 100vh; margin: 0; background: #f1f5f9; }
+    .card { background: #fff; padding: 2rem; border-radius: 10px; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08); width: 100%; max-width: 360px; }
+    h1 { margin: 0 0 1.25rem; font-size: 1.4rem; }
+    label { display: block; font-size: 0.9rem; margin-bottom: 0.35rem; font-weight: 600; }
+    input { width: 100%; box-sizing: border-box; padding: 0.6rem 0.75rem; margin-bottom: 1rem; border: 1px solid #cbd5e1; border-radius: 6px; }
+    button { width: 100%; padding: 0.7rem; border: 0; border-radius: 6px; background: #0f172a; color: #fff; font-weight: 600; cursor: pointer; }
+    .err { color: #b91c1c; font-size: 0.85rem; min-height: 1.2em; margin-bottom: 0.75rem; }
+  </style>
+</head>
+<body>
+  <form class="card" id="login-form">
+    <h1>ShopEase Login</h1>
+    <div class="err" id="login-error"></div>
+    <label for="username">Username</label>
+    <input id="username" name="username" type="text" autocomplete="username" required />
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password" autocomplete="current-password" required />
+    <button type="submit">Sign In</button>
+  </form>
+  <script>
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errEl = document.getElementById('login-error');
+      errEl.textContent = '';
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        errEl.textContent = data.message || 'Login failed';
+        return;
+      }
+      window.location.href = '/';
+    });
+  </script>
+</body>
+</html>
