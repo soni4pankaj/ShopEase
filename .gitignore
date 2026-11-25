@@ -4,3 +4,4 @@ node_modules/
 # Local environment/log files
 *.log
 .env
+shopease-credentials.env

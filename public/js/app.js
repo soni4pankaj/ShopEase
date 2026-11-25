@@ -650,6 +650,12 @@ async function runReport() {
   }
 }
 
+async function logoutUser() {
+  await fetch('/api/auth/logout', { method: 'POST' });
+  window.location.href = '/login.html';
+}
+
+
 document.getElementById('export-csv-btn')?.addEventListener('click', () => {
   const { url } = buildReportUrl('csv');
   window.location.href = url;
