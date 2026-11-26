@@ -651,9 +651,20 @@ async function runReport() {
 }
 
 async function logoutUser() {
-  await fetch('/api/auth/logout', { method: 'POST' });
-  window.location.href = '/login.html';
+  try {
+    const res = await fetch('/api/auth/logout', { method: 'POST' });
+    if (!res.ok) {
+      throw new Error('Failed to log out');
+    }
+    window.location.href = '/login.html';
+  } catch (err) {
+    console.error(err);
+    showToast(err.message || 'Logout failed', 'error');
+  }
 }
+
+document.getElementById('logout-btn')?.addEventListener('click', logoutUser);
+
 
 
 document.getElementById('export-csv-btn')?.addEventListener('click', () => {
